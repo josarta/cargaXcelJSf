@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:event  type="preRenderView" listener='#{archivosControladorJSF.cargarRuta(requestScope["ruta"])}'/>
+
+        <h4>
+            cantidad de hojas #{archivosControladorJSF.archivoExcel.numberOfSheets}
+        </h4>
+
+        <h:form>
+
+            <h:selectOneRadio value="#{archivosControladorJSF.opcion}" required="true" id="boton">
+                <f:selectItem itemValue="Sucursales" itemLabel="Sucursales" />
+                <f:selectItem itemValue="Ciudad" itemLabel="Ciudad" />
+                <f:selectItem itemValue="Departamento" itemLabel="Departamento" />
+                <f:selectItem itemValue="Perfiles" itemLabel="Perfiles" />
+                <f:selectItem itemValue="Rutas" itemLabel="Rutas" />
+                <f:selectItem itemValue="Vehiculos" itemLabel="Vehiculos" />
+                <f:selectItem itemValue="Usuarios" itemLabel="Usuarios" />
+            </h:selectOneRadio>
+
+            <h:commandButton action="#{archivosControladorJSF.cargarPagina()}" value="Cargar"/>
+
+        </h:form>
+
+
+
+        <br/>
+        <hr/>
+
+        <h3>#{archivosControladorJSF.opcion}.</h3>
+
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Sucursales' }">    
+            <table border="1">
+                <tr>
+                    <td>Identificador de Sucursal</td>
+                    <td>Direccion</td>
+                    <td>Ciudad</td>
+                    <td>Telefono</td>
+                    <td>Barrio</td>
+                    <td>Correo</td>
+                    <td>Nombre</td>
+                    <td>Horario</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miSucursal.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miSucursal.getColumns()-1}">
+                            <td> #{archivosControladorJSF.miSucursal.getCell(columnas,filas).getContents()} </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Ciudad' }">    
+            <table border="1">
+                <tr>
+                    <td>CiudadID</td>
+                    <td>Nombre</td>
+                    <td>DepartamentoID</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miCiudad.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miCiudad.getColumns()-1}">
+
+                            <td> #{archivosControladorJSF.miCiudad.getCell(columnas,filas).getContents()} </td>
+
+                        </c:forEach>
+
+                        #{archivosControladorJSF.setRutaID(archivosControladorJSF.miCiudad.getCell(0,filas).getContents())}
+                        #{archivosControladorJSF.setCiudadD(archivosControladorJSF.miCiudad.getCell(1,filas).getContents())}
+                        #{archivosControladorJSF.setCiudadO(archivosControladorJSF.miCiudad.getCell(2,filas).getContents())}
+
+                        
+
+                         <td>  
+                            <c:if test="#{archivosControladorJSF.ingresarCiudad()== true}">
+                                <img src="Imagenes/ok.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+                            <c:if test="#{archivosControladorJSF.ingresarCiudad()== false}">
+                                <img src="Imagenes/bad.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+
+                        </td>
+
+                        
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Departamento' }">    
+            <table border="1">
+                <tr>
+                    <td>DepartamentoID</td>
+                    <td>Nombre</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miDepartamento.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miDepartamento.getColumns()-1}">
+
+                            <td> #{archivosControladorJSF.miDepartamento.getCell(columnas,filas).getContents()} </td>
+
+                        </c:forEach>
+
+                        #{archivosControladorJSF.setRutaID(archivosControladorJSF.miCiudad.getCell(0,filas).getContents())}
+                        #{archivosControladorJSF.setCiudadD(archivosControladorJSF.miCiudad.getCell(1,filas).getContents())}
+
+
+                        <td>  
+                            <c:if test="#{archivosControladorJSF.ingresarDepartamento()== true}">
+                                <img src="Imagenes/ok.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+                            <c:if test="#{archivosControladorJSF.ingresarDepartamento()== false}">
+                                <img src="Imagenes/bad.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+
+                        </td>
+
+
+
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Perfiles' }">    
+            <table border="1">
+                <tr>
+                    <td>PerfilID</td>
+                    <td>Tipo</td>
+                    <td>Descripcion</td>
+                    <td>Permisos</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miPerfil.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miPerfil.getColumns()-1}">
+
+                            <td> #{archivosControladorJSF.miPerfil.getCell(columnas,filas).getContents()} </td>
+
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Rutas' }">    
+            <table border="1">
+                <tr>
+                    <td>RutaID</td>
+                    <td>Ciudad Origen</td>
+                    <td>Ciudad Destino</td>
+                    <td>Tiempo</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miRut.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miRut.getColumns()-1}">
+                            <td> #{archivosControladorJSF.miRut.getCell(columnas,filas).getContents()} </td>
+                        </c:forEach>
+                        #{archivosControladorJSF.setRutaID(archivosControladorJSF.miRut.getCell(0,filas).getContents())}
+                        #{archivosControladorJSF.setCiudadD(archivosControladorJSF.miRut.getCell(1,filas).getContents())}
+                        #{archivosControladorJSF.setCiudadO(archivosControladorJSF.miRut.getCell(2,filas).getContents())}
+                        #{archivosControladorJSF.setTiempo(archivosControladorJSF.miRut.getCell(3,filas).getContents())}
+
+                        
+                        <td>  
+                            <c:if test="#{archivosControladorJSF.ingresarRuta()== true}">
+                                <img src="Imagenes/ok.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+                            <c:if test="#{archivosControladorJSF.ingresarRuta()== false}">
+                                <img src="Imagenes/bad.png" height="32px" width="32px" alt=""/>
+                            </c:if> 
+
+
+                        </td>
+
+                        
+                        
+                        
+                    </tr>
+                </c:forEach>
+
+
+
+            </table>    
+
+        </c:if>
+
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Tarifas' }">    
+            <table border="1">
+                <tr>
+                    <td>tarifaID</td>
+                    <td>rutaID</td>
+                    <td>Peso Minimo</td>
+                    <td>Peso Maximo</td>
+                    <td>Dimencion Minimo</td>
+                    <td>Dimencion Maximo</td>
+                    <td>Valor</td>
+                    <td>Estado</td>
+
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miTarifas.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="1" var="columnas" end="#{archivosControladorJSF.miTarifas.getColumns()-1}">
+                            <td> #{archivosControladorJSF.miTarifas.getCell(columnas,filas).getContents()} </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Vehiculos' }">    
+            <table border="1">
+                <tr>
+                    <td>veiculoID</td>
+                    <td>Placa</td>
+                    <td>Marca</td>
+                    <td>Modelo</td>
+                    <td>Estado Vehiculo</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miVehiculo.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miVehiculo.getColumns()-1}">
+                            <td> #{archivosControladorJSF.miVehiculo.getCell(columnas,filas).getContents()} </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+        <c:if test="#{archivosControladorJSF.opcion=='Usuarios' }">    
+            <table border="1">
+                <tr>
+                    <td>Cedula</td>
+                    <td>Tipo Documento</td>
+                    <td>Nombre </td>
+                    <td>Apellido </td>
+                    <td>Direccion</td>
+                    <td>Telefono Fijo</td>
+                    <td>Telefono Celular</td>
+                    <td>Fecha de Nacimiento</td>
+                    <td>Correo</td>
+                    <td>Clave</td>
+                    <td>CiudadID</td>
+                    <td>Estado</td>
+                </tr>    
+                <c:forEach begin="1" var="filas" end="#{archivosControladorJSF.miUsuario.getRows()-1}">
+                    <tr>    
+                        <c:forEach begin="0" var="columnas" end="#{archivosControladorJSF.miUsuario.getColumns()-1}">
+                            <td> #{archivosControladorJSF.miUsuario.getCell(columnas,filas).getContents()} </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>    
+        </c:if>
+
+
+
+    </h:body>
+</html>
+
